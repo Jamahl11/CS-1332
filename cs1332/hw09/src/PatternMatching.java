@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * Collaborators: LIST ALL COLLABORATORS YOU WORKED WITH HERE
  *
- * Resources: LIST ALL NON-COURSE RESOURCES YOU CONSULTED HERE
+ * Resources: GeeksforGeeks, StackedOverflow, Baeldung, JavaAPI(Docs Oracle)
  */
 public class PatternMatching {
 
@@ -51,16 +51,14 @@ public class PatternMatching {
         }
         int[] failureTable = buildFailureTable(pattern, comparator);
         while (textIndex + (pattern.length() - 1) - patIndex < text.length()) {
-            if (comparator.compare(pattern.charAt(patIndex), text.charAt(textIndex)) == 0) {
+            if (comparator.compare(pattern.charAt(patIndex),
+                    text.charAt(textIndex)) == 0) {
                 if (patIndex == pattern.length() - 1) {
                     matches.add(textIndex - patIndex);
                     patIndex = failureTable[patIndex - 1];
-                    patIndex++;
-                    textIndex++;
-                } else {
-                    patIndex++;
-                    textIndex++;
                 }
+                patIndex++;
+                textIndex++;
 
             } else if (patIndex == 0) {
                 textIndex++;
@@ -167,11 +165,14 @@ public class PatternMatching {
         if (text.length() < pattern.length()) {
             return matches;
         }
-        HashMap<Character, Integer> lastTable = (HashMap<Character, Integer>) buildLastTable(pattern);
+        HashMap<Character, Integer> lastTable =
+                (HashMap<Character, Integer>) buildLastTable(pattern);
         int textIndex = 0;
         while (textIndex <= text.length() - pattern.length()) {
             int patIndex = pattern.length() - 1;
-            while (patIndex >= 0 && comparator.compare(text.charAt(textIndex + patIndex), pattern.charAt(patIndex)) == 0) {
+            while (patIndex >= 0 && comparator.compare(
+                    text.charAt(textIndex + patIndex),
+                            pattern.charAt(patIndex)) == 0) {
                 patIndex--;
             }
             if (patIndex == -1) {
@@ -180,7 +181,8 @@ public class PatternMatching {
 
             } else {
                 if (lastTable.containsKey(text.charAt(textIndex + patIndex))) {
-                    int shift = lastTable.get(text.charAt(textIndex + patIndex));
+                    int shift = lastTable.get(
+                            text.charAt(textIndex + patIndex));
                     if (shift < patIndex) {
                         textIndex = textIndex + patIndex - shift;
 
@@ -325,7 +327,8 @@ public class PatternMatching {
         if (patternHash == key) {
             boolean match = true;
             for (int i = 0; i < pattern.length(); i++) {
-                if (comparator.compare(pattern.charAt(i), text.charAt(i)) != 0) {
+                if (comparator.compare(pattern.charAt(i),
+                        text.charAt(i)) != 0) {
                     match = false;
                     break;
                 }
@@ -336,12 +339,14 @@ public class PatternMatching {
         }
         for (int i = 1; i <= text.length() - pattern.length(); i++) {
             patternHash = patternHash - (text.charAt(i - 1) * base);
-            patternHash = (patternHash * BASE) + text.charAt(i + pattern.length() - 1);
+            patternHash = (patternHash * BASE)
+                    + text.charAt(i + pattern.length() - 1);
             if (patternHash == key) {
                 boolean match = true;
                 int patIndex = 0;
                 for (int j = i; j <= i + pattern.length() - 1; j++) {
-                    if (comparator.compare(pattern.charAt(patIndex), text.charAt(j)) != 0) {
+                    if (comparator.compare(pattern.charAt(
+                            patIndex), text.charAt(j)) != 0) {
                         match = false;
                         break;
                     }
